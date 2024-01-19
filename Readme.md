@@ -3,4 +3,4 @@
 HbuilderX运行
 
 也可以直接下载试用版：
-https://github.com/WildSaltedFish/-talk/releases/tag/111
+https://github.com/WildSaltedFish/-talk/releases/tag/apk
