@@ -3,7 +3,7 @@
 		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
 				<view class="action" @tap="BackPage">
-					v 0.0.1
+					v 0.0.3
 				</view>
 				<view class="content" :style="[{top:StatusBar + 'px'}]" style="font-size: 17px;font-weight:900;color: #61666b;">
 					<slot name="content"></slot>

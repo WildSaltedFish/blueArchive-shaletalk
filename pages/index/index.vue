@@ -63,7 +63,9 @@
 			</view>
 		</view>
 		<view class="cu-bar foot input" :style="[{bottom:InputBottom+'px'}]">
-			<input class="solid-bottom" :adjust-position="false" :focus="false" maxlength="300" cursor-spacing="10"
+			<input v-if="textInfo[this.onChangeNum].type === 'pic'" class="solid-bottom" :adjust-position="false" :focus="false" maxlength="300" cursor-spacing="10"
+				@focus="InputFocus" @blur="InputBlur" @input="changeWorld()" disabled></input>
+			<input v-else class="solid-bottom" :adjust-position="false" :focus="false" maxlength="300" cursor-spacing="10"
 				@focus="InputFocus" @blur="InputBlur" v-model="modifyInput" @input="changeWorld()" :disabled="textInfo[this.onChangeNum].type === 'pic'"></input>
 			<view class="action">
 				<button class="cu-btn round lines-blue shadow" @tap="modalName = 'bottomModal'"
@@ -112,15 +114,15 @@
 				</view>
 			</view>
 			<!-- 编辑弹窗 -->
-			<view class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''">
+			<view class="cu-modal bottom-modal" :class="modalName=='bottomModal'?'show':''" style="margin-top: 150rpx;">
 				<view class="cu-dialog">
 					<view class="cu-bar bg-white">
-						<view class="action">确定</view>
+						<view class="action" @tap="showFastListMe">快捷选择:on</view>
 						<view class="action" @tap="delText">删除</view>
 						<view class="action" @tap="hideModal">关闭</view>
 					</view>
 					<view class="padding-xl">
-						<view style="">
+						<view style="margin-bottom: 50rpx;">
 							角色：
 							<button class="cu-btn round Editbutton"
 								:class="textInfo[this.onChangeNum].side === 'teacher' ? 'bg-orange': ''"
@@ -133,7 +135,9 @@
 								@tap="changeRole(3)">旁白</button>
 						</view>
 						<view v-if="textInfo[this.onChangeNum].side === 'student'" style="margin-top: 10rpx;">
-							<view class="cu-form-group" style="width: 100%;">
+							<!-- //自定义模式 -->
+							<view v-if="showFastList === false">
+										<view class="cu-form-group" style="width: 100%;">
 								<view class="title">名字</view>
 								<input name="input" v-model="textInfo[onChangeNum].name"></input>
 							</view>
@@ -141,12 +145,19 @@
 								<view class="action">
 									头像
 								</view>
-
 							</view>
-							<view class="cu-form-group">
+							<view class="cu-form-group" v-if="textInfo[onChangeNum].type === 'pic'">
 								<view class="grid col-4 grid-square flex-sub">
 									<image style="width: 280rpx;height: 280rpx" :src="textInfo[onChangeNum].pic"
 										mode="aspectFill" @tap="ChooseImage(1)"></image>
+								</view>
+							</view>
+							</view>
+							<!-- 极速模式 -->
+							<view v-else style="width: 100%;height:190px;background-color: #FFFFFF;padding: 10px;display: flex;flex-wrap: wrap;">
+								<view v-for="item in fastStudent" style="margin-left: 10px;">
+								<image :src="item.pic" style="border-radius: 200px;width: 100rpx;height: 100rpx"></image>
+								<br>	<span>{{item.name}}</span>
 								</view>
 							</view>
 						</view>
@@ -156,14 +167,14 @@
 							</view>
 
 						</view>
-						<view class="cu-form-group">
+						<view class="cu-form-group" v-if="textInfo[this.onChangeNum].side === 'student'">
 							<view class="grid col-4 grid-square flex-sub">
-								<image style="width: 280rpx;" :src="textInfo[onChangeNum].url" mode="aspectFill"
+								<image style="max-width: 300px;" :src="textInfo[onChangeNum].url" mode="aspectFill"
 									@tap="ChooseImage(2)"></image>
 							</view>
 							<button class="cu-btn round Editbutton"
 								:class="textInfo[this.onChangeNum].side === 'teacher' ? 'bg-orange': ''"
-								@tap="ChooseImage(2)" v-if="textInfo[onChangeNum].url === ''">
+								@tap="ChooseImage(2)" v-if="textInfo[onChangeNum].url === ''" >
 								添加</button>
 						</view>
 
@@ -211,6 +222,68 @@
 				createSide: 0,
 				editRow: {},
 				imgList: [],
+				showFastList: true,
+				fastStudent: [{
+					side: 'student',
+					name: '响',
+					pic: '/static/fastImg/YOU.png',
+					type: 'pic',
+					url: '/static/student.jpg'
+				},{
+					side: 'student',
+					name: '老八',
+					pic: '/static/fastImg/laoba.jpg',
+					type: 'pic',
+					url: '/static/student.jpg'
+				},{
+					side: 'student',
+					name: '真白',
+					pic: '/static/fastImg/zhenbai.jpg',
+					type: 'pic',
+					url: '/static/student.jpg'
+				},{
+					side: 'student',
+					name: '千夏',
+					pic: '/static/fastImg/qianxia.jpg',
+					type: 'pic',
+					url: '/static/student.jpg'
+				},{
+					side: 'student',
+					name: '优香',
+					pic: '/static/fastImg/youxiang.png',
+					type: 'pic',
+					url: '/static/student.jpg'
+				},{
+					side: 'student',
+					name: '梓',
+					pic: '/static/fastImg/zi.png',
+					type: 'pic',
+					url: '/static/student.jpg'
+				},{
+					side: 'student',
+					name: '未花',
+					pic: '/static/fastImg/mika.png',
+					type: 'pic',
+					url: '/static/student.jpg'
+				},{
+					side: 'student',
+					name: '星野',
+					pic: '/static/fastImg/xingye.png',
+					type: 'pic',
+					url: '/static/student.jpg'
+				},{
+					side: 'student',
+					name: '兄弟',
+					pic: '/static/fastImg/xiongdi.png',
+					type: 'pic',
+					url: '/static/student.jpg'
+				},{
+					side: 'student',
+					name: '小春',
+					pic: '/static/fastImg/xiaochun.png',
+					type: 'pic',
+					url: '/static/student.jpg'
+				},]
 			};
 		},
 		methods: {
@@ -245,7 +318,7 @@
 						side: 'student',
 						info: '这是一段学生文字',
 						name: '响',
-						pic: '/static/YOU.png',
+						pic: '/static/fastImg/YOU.png',
 						type: 'text'
 					})
 				} else {
@@ -271,7 +344,7 @@
 					this.textInfo.push({
 						side: 'student',
 						name: '响',
-						pic: '/static/YOU.png',
+						pic: '/static/fastImg/YOU.png',
 						type: 'pic',
 						url: '/static/student.jpg'
 					})
@@ -309,7 +382,7 @@
 					} else if (num === 2) {
 						this.textInfo[this.onChangeNum].side = 'student'
 						this.textInfo[this.onChangeNum].name = '响'
-						this.textInfo[this.onChangeNum].pic = '/static/YOU.png'
+						this.textInfo[this.onChangeNum].pic = '/static/fastImg/YOU.png'
 					} else {
 						this.textInfo[this.onChangeNum].side = 'narration'
 					}
@@ -336,6 +409,12 @@
 			DelImg(e) {
 				this.$nextTick(() => {
 					this.textInfo[this.onChangeNum].pic = ''
+				})
+			},	
+			//开启快捷选人（学生）
+			showFastListMe(e) {
+				this.$nextTick(() => {
+					this.showFastList = true
 				})
 			},
 		}
