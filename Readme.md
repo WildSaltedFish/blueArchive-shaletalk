@@ -1,3 +1,5 @@
-基于ColorUI
+基于CSS框架：ColorUI，技术栈：UNI-APP with Vue2
+
 HbuilderX运行
-也可以直接下载：
+
+也可以直接下载试用版：
